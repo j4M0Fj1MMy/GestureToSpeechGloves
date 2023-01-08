@@ -1,3 +1,7 @@
+# This module serves as experiment module, I get my sensor value with this
+# It communicate with the rsp with certain modules
+#
+
 import smbus			#import SMBus module of I2C
 from time import sleep          #import
 import RPi.GPIO as GPIO
@@ -49,16 +53,16 @@ def select_mpu(gpio_pin):
 
 def read_raw_data(addr):
 	#Accelero and Gyro value are 16-bit
-        high = bus.read_byte_data(Device_Address, addr)
-        low = bus.read_byte_data(Device_Address, addr+1)
-    
-        #concatenate higher and lower value
-        value = ((high << 8) | low)
-        
-        #to get signed value from mpu6050
-        if(value > 32768):
-                value = value - 65536
-        return value
+    high = bus.read_byte_data(Device_Address, addr)
+    low = bus.read_byte_data(Device_Address, addr+1)
+  
+    #concatenate higher and lower value
+    value = ((high << 8) | low)
+      
+    #to get signed value from mpu6050
+    if(value > 32768):
+          value = value - 65536
+    return value
 
 
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
@@ -106,5 +110,4 @@ except:
 	for i in listOfValues:
 		print('')
 		for j in i:
-			
 			print(j)
