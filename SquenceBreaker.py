@@ -12,9 +12,34 @@ Returns
 a list of gestures for clasification
 """
 class SequenceBreaker:
+    import numpy as np
+    from spotting import parse_data_to_file_sensor_meter,get_data_from_file
+
+    data = parse_data_to_file_sensor_meter('sequence_of_gestures')
+    
+    # first []: list of gestures
+    # second []: list of sensor
+    # 3rd []: list of columns
+    # 4th []: list of values
 
     WINDOW_SIZE = 10 #??
+    variance_array = []
+
+    for gesture in data:
+        for sensor in gesture:
+            for column in sensor:
+                length = len(column)//WINDOW_SIZE
+                for i in range(length+1):
+                    testdata = column[i*WINDOW_SIZE:(i+1)*WINDOW_SIZE]
+                    variance = np.array(testdata).var()
+                    variance_array.append(variance)
+                    
+                    # exit()
+    
+
+
     LIST_OF_GESTURES = []
+
 
     def slide():
         """ 
