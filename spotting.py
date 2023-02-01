@@ -49,22 +49,25 @@ def parse_data_to_file_sensor_meter(folder):
         sensor_data_of_files.append(sensor_data)
     return sensor_data_of_files
 
-def main():
+def main(gestures):
     data = parse_data_to_file_sensor_meter('gestures')
     # the data is formatted as file_list -> sensor_list -> meter_list
     # By column, I mean column of sensor i.e. meter
     # By file, each file contain a gesture
     import time
-    tempLabel = np.array(['noMove','oco','oco','oco','ovo','ovo','ovo','p','p'])
+    tempLabel = np.array(['no move','oco','oco','oco','ovo','ovo','ovo','p','p'])
 
-    model = knndtw.KnnDtw(n_neighbors=3)
+    model = knndtw.KnnDtw(n_neighbors=5)
     model.fit(data,tempLabel)
 
     start_time = time.time()
-    result = model.predict([data[5]])
+    result = model.predict(gestures)
     print(result[0],result[1])
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
+
 if __name__ == '__main__':
-    main()
+    from SquenceBreaker import SequenceBreaker
+    gestures = (SequenceBreaker().find_index())
+    main(gestures)

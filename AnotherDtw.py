@@ -127,6 +127,7 @@ class KnnDtw:
             for j in range(0, y_s):
                 dm[i, j] = self.custom_treatment(x[i], y[j])
     
+            print('------next------')
         return dm
         
     def predict(self, x):

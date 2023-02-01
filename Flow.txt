@@ -28,3 +28,14 @@ Skills:
 
 Info:
     hostname: raspberrypi, id:pi, pw: pi
+
+
+
+Application:
+    1. Bluetooth connection with raspberrypi
+    2. continuously receive data from rsp
+    3. continusosly process data and pronounce the word
+
+    ** record gesture -- check conflict (make sure that it is unique)
+
+    
