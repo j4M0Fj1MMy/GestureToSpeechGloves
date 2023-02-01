@@ -65,3 +65,6 @@ def main():
     print(result[0],result[1])
 
     print("--- %s seconds ---" % (time.time() - start_time))
+
+if __name__ == '__main__':
+    main()
