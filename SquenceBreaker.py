@@ -43,14 +43,6 @@ class SequenceBreaker:
 
     def calc_var(self):
         frames = self.chop_data_into_frame_of_windowsize()
-        for each_frame in frames:
-            # do the calculation with np.var(axis=0?)
-            return
-        #LIST_OF_GESTURES = []
-
-
-    def calc_var(self):
-        frames = self.chop_data_into_frame_of_windowsize()
 
         variance_list = []
         for each_frame in frames:
@@ -66,17 +58,9 @@ class SequenceBreaker:
 
         # returns a list of windows each contains the g variance and a variance
         return variance_list
-
-
         #LIST_OF_GESTURES = []
 
-
-    def slide():
-        """ 
-
-        """
-
-    def find_index(self):
+    def seperate_gestures(self):
 
         variance_list = self.calc_var()
 

@@ -69,5 +69,5 @@ def main(gestures):
 
 if __name__ == '__main__':
     from SquenceBreaker import SequenceBreaker
-    gestures = (SequenceBreaker().find_index())
+    gestures = SequenceBreaker().seperate_gestures()
     main(gestures)
