@@ -65,7 +65,7 @@ class SequenceBreaker:
         variance_list = self.calc_var()
 
         # temp number to determine breaks
-        threshold = 11
+        threshold = 10
 
         # Using the first var for tests
         var_list = [i[0] for i in variance_list]
