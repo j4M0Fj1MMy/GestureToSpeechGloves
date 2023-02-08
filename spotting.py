@@ -69,6 +69,6 @@ def main(gestures):
 
 if __name__ == '__main__':
     from SquenceBreaker import SequenceBreaker
-    # gestures = SequenceBreaker().seperate_gestures()
-    gestures = [parse_data_to_file_sensor_meter('gestures')[2]]
+    gestures = SequenceBreaker().seperate_gestures()
+    # gestures = [parse_data_to_file_sensor_meter('gestures')[2]]
     main(gestures)
