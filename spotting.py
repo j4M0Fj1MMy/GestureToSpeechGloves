@@ -55,7 +55,7 @@ def main(gestures):
     # By column, I mean column of sensor i.e. meter
     # By file, each file contain a gesture
     import time
-    tempLabel = np.array(['borrow','borrow','borrow','no move','oco','oco','oco','ovo','ovo','ovo','p','p','tshirt','tshirt','tshirt','try','try','try'])
+    tempLabel = np.array(['borrow','borrow','borrow','oco','oco','oco','ovo','ovo','ovo','p','p','tshirt','tshirt','tshirt','try','try','try'])
 
     model = knndtw.KnnDtw(n_neighbors=3)
     model.fit(data,tempLabel)
@@ -70,5 +70,6 @@ def main(gestures):
 if __name__ == '__main__':
     from SquenceBreaker import SequenceBreaker
     gestures = SequenceBreaker().seperate_gestures()
+    SequenceBreaker().plotgraph()
     # gestures = [parse_data_to_file_sensor_meter('gestures')[2]]
     main(gestures)

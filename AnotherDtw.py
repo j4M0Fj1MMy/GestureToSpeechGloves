@@ -41,20 +41,25 @@ class KnnDtw:
         self.x = x
         self.l = l
         
-    def custom_treatment(self, ts_a, ts_b):
-        # custom modification
-        # By previous experiment, we want to compare the gyroscope values, so for each gesture, there are 3*5 = 15 values to compile. Therefore we need to loop the whole thing for 15 times
-
-        cost = []
+    def fuse_all_columns_dtw_distance(self, ts_a, ts_b):
+        '''
+        we want to compare the IMU values, so for each gesture, there are 6*5 = 30 columns to compute. Therefore we need to calcualte the dtw distance for 30 times
+        '''
+        from fastdtw import fastdtw
+        cost_g = []
+        cost_a = []
         for each_sensor_a, each_sensor_b in zip(ts_a,ts_b):
+            for each_meter_a, each_meter_b in zip(each_sensor_a[:3], each_sensor_b[:3]):
+                cost_g.append(fastdtw(each_meter_a,each_meter_b,dist=lambda x,y: abs(x-y))[0])
+                # cost_g.append(self._dtw_distance(each_meter_a,each_meter_b))
             for each_meter_a, each_meter_b in zip(each_sensor_a[3:], each_sensor_b[3:]):
-                cost.append(self._dtw_distance(each_meter_a,each_meter_b))
+                cost_a.append(fastdtw(each_meter_a,each_meter_b,dist=lambda x,y: abs(x-y))[0])
+                # cost_a.append(self._dtw_distance(each_meter_a,each_meter_b))
         
-        total = 0
-        for c in cost:
-            total += c
-        print(total/15)
-        return total/15
+        gyroscope_factor = 20
+        score = (sum(cost_g)/gyroscope_factor+sum(cost_a))/30
+        print(score)
+        return score
 
     def _dtw_distance(self, ts_a, ts_b, d = lambda x,y: abs(x-y)):
         """Returns the DTW similarity distance between two 2-D
@@ -79,7 +84,7 @@ class KnnDtw:
         # Create cost matrix via broadcasting with large int
         ts_a, ts_b = np.array(ts_a), np.array(ts_b)
         M, N = len(ts_a), len(ts_b)
-        # cost = sys.maxint * np.ones((M, N))
+
         cost = float('inf') * np.ones((M, N))
 
         # Initialize the first row and column
@@ -101,13 +106,13 @@ class KnnDtw:
         return cost[-1, -1]
     
     def _dist_matrix(self, x, y):
-        """Computes the M x N distance matrix between the training
+        """
+        Computes the M x N distance matrix between the training
         dataset and testing dataset (y) using the DTW distance measure
         
         Arguments
         ---------
         x : array of shape [n_samples, n_timepoints]
-        
         y : array of shape [n_samples, n_timepoints]
         
         Returns
@@ -125,7 +130,7 @@ class KnnDtw:
         # for each data in x, compare with each data in y
         for i in range(0, x_s):
             for j in range(0, y_s):
-                dm[i, j] = self.custom_treatment(x[i], y[j])
+                dm[i, j] = self.fuse_all_columns_dtw_distance(x[i], y[j])
     
             print('------next------')
         return dm
@@ -149,7 +154,9 @@ class KnnDtw:
         dm = self._dist_matrix(x, self.x)
 
         # Identify the k nearest neighbors
-        knn_idx = dm.argsort()[:, :self.n_neighbors]
+        knn_idx = dm.argsort()
+        print(knn_idx)
+        knn_idx = knn_idx[:, :self.n_neighbors]
 
         print(knn_idx)
         # Identify k nearest labels

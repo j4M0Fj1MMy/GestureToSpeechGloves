@@ -22,9 +22,20 @@ class SequenceBreaker:
     # 3rd []: list of columns
     # 4th []: list of values
 
-    WINDOW_SIZE = 7 #??
+    WINDOW_SIZE = 6 #??
     variance_array = []
 
+    def plotgraph(self):
+        """plot the graph of the seuqnece"""
+        from matplotlib import pyplot as plt
+        sequence_of_gestures = self.list_of_gestures[0]
+        for sensor in sequence_of_gestures:
+            for meter in sensor[:3]:
+                plt.plot(meter)
+            plt.figure()
+            for meter in sensor[3:]:
+                plt.plot(meter)
+            plt.show()
 
     # 1. chop data into window_size frame for each finger. data of 5 fingers will be in the same list.
     # 2. calculate the variance. 6 variance * 5 fingers = 30 variance
@@ -49,7 +60,7 @@ class SequenceBreaker:
         variance_list = []
         for each_frame in frames:
             # do the calculation with np.var(axis=0?)
-            total = [0,0,0,0,0,0]
+            total = [0] * 6
             # Adds up values of 5 sensors
             for i in range(5):
                 total += self.np.var(each_frame[i],axis=0)
@@ -63,14 +74,16 @@ class SequenceBreaker:
     def seperate_gestures(self):
 
         variance_list = self.calc_var()
-        for v in variance_list:
-            print(v)
+        for i,v in enumerate(variance_list):
+            print(i,v)
 
         # temp number to determine breaks
-        threshold = 10
+        threshold_g = 10
+        threshold_a = 0.015
 
         # Using the first var for tests
         var_list = [i[0] for i in variance_list]
+        var_list_a = [i[1] for i in variance_list]
 
         window_index_list = []
 
@@ -79,10 +92,11 @@ class SequenceBreaker:
         j=0
         while j < len(var_list):
             vari = var_list[j]
-            if (temp == 0 and vari > threshold):
+            if (temp == 0 and vari > threshold_g ):
                 temp = vari
-            elif (temp != 0 and vari < threshold ):
+            elif (temp != 0 and vari < threshold_g and var_list_a[j] < threshold_a):
                 window_index_list.append(j)
+                print("set a bp at: " + str(j))
                 j += self.WINDOW_SIZE
             j += 1
 
