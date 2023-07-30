@@ -20,10 +20,6 @@ By converting hand languages into speech with gyroscopes, accelerometers, and a
 microprocessor, we hope to enhance the connection between the hearing-impaired community 
 and general society. Some major milestones and challenges are listed to show the procedures 
 to achieve our goal.
-## 1. Build a responsive data preprocessing channel that could first continuously alleviate 
-input errors from 5 gyroscopes and accelerometers. Then send the obtained processed data 
-from Raspberry Pi to mobile phone.
-## 2. Train a supervised ML model to classify the text to speak accurately, which can handle 
-different speeds of performing hand gestures and different hand shapes.
-## 3. Develop a mobile application to pair with the glove as a control center with functions 
-including speaking the words or sentences classified, modifying the settings of the test-tospeech function, and storing the history of past recognitions.
+## 1. Build a responsive data preprocessing channel that could first continuously alleviate input errors from 5 gyroscopes and accelerometers. Then send the obtained processed data from Raspberry Pi to mobile phone.
+## 2. Train a supervised ML model to classify the text to speak accurately, which can handle different speeds of performing hand gestures and different hand shapes.
+## 3. Develop a mobile application to pair with the glove as a control center with functions including speaking the words or sentences classified, modifying the settings of the test-tospeech function, and storing the history of past recognitions.
